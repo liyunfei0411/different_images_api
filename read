@@ -1,0 +1,6 @@
+method:POST
+url:http://192.168.10.160:8001/check
+form-data:(key:bg value:http://192.168.10.160:8001/static/images/bg1.jpg
+           key:target value:http://192.168.10.160:8001/static/images/test2.jpg
+	   key:area value:[100, 100, 1000, 1000]	
+	  )

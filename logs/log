@@ -1,0 +1,216 @@
+ERROR identifying_objects.py:207 no target file
+ERROR identifying_objects.py:207 no target file
+ERROR identifying_objects.py:178 e
+ERROR app.py:1891 Exception on /check [POST]
+Traceback (most recent call last):
+  File "/home/yq/different_images_api/identifying_objects.py", line 170, in check_image
+    return jsonify({"error":e, "prompt": "No target image parameter"})
+UnboundLocalError: local variable 'e' referenced before assignment
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/yq/different_images_api/identifying_objects.py", line 179, in check_image
+    return jsonify({"error":e, "prompt": "bg or target Missing parameter"})
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 370, in jsonify
+    dumps(data, indent=indent, separators=separators) + "\n",
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 211, in dumps
+    rv = _json.dumps(obj, **kwargs)
+  File "/home/yq/anaconda3/lib/python3.7/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 100, in default
+    return _json.JSONEncoder.default(self, o)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type UnboundLocalError is not JSON serializable
+ERROR app.py:1891 Exception on /check [POST]
+Traceback (most recent call last):
+  File "/home/yq/different_images_api/identifying_objects.py", line 211, in check_image
+    obj_reco = ObjectRecognition(bg, target, target_name, area)
+  File "/home/yq/different_images_api/identifying_objects.py", line 61, in __init__
+    self.left_x = area[0]
+TypeError: 'int' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/yq/different_images_api/identifying_objects.py", line 217, in check_image
+    return jsonify({"error":e, "prompt": "target or bg not image"})
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 370, in jsonify
+    dumps(data, indent=indent, separators=separators) + "\n",
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 211, in dumps
+    rv = _json.dumps(obj, **kwargs)
+  File "/home/yq/anaconda3/lib/python3.7/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 100, in default
+    return _json.JSONEncoder.default(self, o)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type TypeError is not JSON serializable
+ERROR app.py:1891 Exception on /check [POST]
+Traceback (most recent call last):
+  File "/home/yq/different_images_api/identifying_objects.py", line 207, in check_image
+    obj_reco = ObjectRecognition(bg, target, target_name, area)
+  File "/home/yq/different_images_api/identifying_objects.py", line 61, in __init__
+    self.left_x = area[0]
+TypeError: 'int' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/yq/different_images_api/identifying_objects.py", line 213, in check_image
+    return jsonify({"error":e, "prompt": "target or bg not image"})
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 370, in jsonify
+    dumps(data, indent=indent, separators=separators) + "\n",
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 211, in dumps
+    rv = _json.dumps(obj, **kwargs)
+  File "/home/yq/anaconda3/lib/python3.7/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 100, in default
+    return _json.JSONEncoder.default(self, o)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type TypeError is not JSON serializable
+ERROR identifying_objects.py:193 no bg file
+ERROR app.py:1891 Exception on /check [POST]
+Traceback (most recent call last):
+  File "/home/yq/different_images_api/identifying_objects.py", line 187, in check_image
+    res_bg = requests.get(bg_url)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/requests/api.py", line 75, in get
+    return request('get', url, params=params, **kwargs)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/requests/api.py", line 60, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/requests/sessions.py", line 519, in request
+    prep = self.prepare_request(req)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/requests/sessions.py", line 462, in prepare_request
+    hooks=merge_hooks(request.hooks, self.hooks),
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/requests/models.py", line 313, in prepare
+    self.prepare_url(url, params)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/requests/models.py", line 387, in prepare_url
+    raise MissingSchema(error)
+requests.exceptions.MissingSchema: Invalid URL 'None': No schema supplied. Perhaps you meant http://None?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/yq/different_images_api/identifying_objects.py", line 194, in check_image
+    return jsonify({"error":e, "prompt": "no bg file"})
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 370, in jsonify
+    dumps(data, indent=indent, separators=separators) + "\n",
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 211, in dumps
+    rv = _json.dumps(obj, **kwargs)
+  File "/home/yq/anaconda3/lib/python3.7/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 100, in default
+    return _json.JSONEncoder.default(self, o)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type MissingSchema is not JSON serializable
+ERROR app.py:1891 Exception on /check [POST]
+Traceback (most recent call last):
+  File "/home/yq/different_images_api/identifying_objects.py", line 208, in check_image
+    diff_score, coordinate_list = obj_reco.main()
+  File "/home/yq/different_images_api/identifying_objects.py", line 143, in main
+    self.clip_area()
+  File "/home/yq/different_images_api/identifying_objects.py", line 69, in clip_area
+    self.bg = self.bg[self.left_y:self.right_y, self.left_x:self.right_x]
+TypeError: 'NoneType' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/yq/different_images_api/identifying_objects.py", line 213, in check_image
+    return jsonify({"error":e, "prompt": "target or bg not image"})
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 370, in jsonify
+    dumps(data, indent=indent, separators=separators) + "\n",
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 211, in dumps
+    rv = _json.dumps(obj, **kwargs)
+  File "/home/yq/anaconda3/lib/python3.7/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/yq/anaconda3/lib/python3.7/site-packages/flask/json/__init__.py", line 100, in default
+    return _json.JSONEncoder.default(self, o)
+  File "/home/yq/anaconda3/lib/python3.7/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type TypeError is not JSON serializable
+ERROR identifying_objects.py:173 e
+ERROR identifying_objects.py:173 e
