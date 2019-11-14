@@ -1,3 +1,4 @@
+import time
 from flask import Flask, request, jsonify, render_template
 import cv2
 import numpy as np
@@ -7,7 +8,12 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 from collections import OrderedDict
+from quguang import unevenLightCompensate
+from illuminationChange import illum
+import sys
 
+
+sys.setrecursionlimit(100000)
 
 # 配置日志信息
 # 设置日志的记录等级
@@ -42,7 +48,7 @@ def show_target():
 
 class ObjectRecognition:
 
-    def __init__(self, bg, target, target_name, area=None):
+    def __init__(self, bg, target, area=None):
         '''
         :param bg: 背景图
         :param target: 目标图
@@ -53,12 +59,13 @@ class ObjectRecognition:
         '''
         self.bg = bg
         self.target = target
+        self.origin_bg = bg
         self.origin_target = target
-        self.target_name = target_name
+        #self.target_name = target_name
         self.width = self.origin_target.shape[0]
         self.height = self.origin_target.shape[1]
         self.area = area
-        self.is_wb = None
+        # self.is_wb = None
         self.is_light = 0.0
         if self.area is not None:
             self.left_x = area["x_min"]
@@ -82,13 +89,13 @@ class ObjectRecognition:
         result = round(result, 2)
         return result
 
-    def check_bg(self):
-        # 检查参考图是否是黑白图
-        b, g, r = cv2.split(self.bg)
-        if (b == g).all() and (b == r).all():
-            return True
-        else:
-            return False
+    # def check_bg(self):
+    #     # 检查参考图是否是黑白图
+    #     b, g, r = cv2.split(self.bg)
+    #     if (b == g).all() and (b == r).all():
+    #         return True
+    #     else:
+    #         return False
 
     def get_contours(self):
         '''
@@ -99,6 +106,14 @@ class ObjectRecognition:
         '''
         if self.is_light > 0.5:
             blur_size = (21, 21)
+            print("背景和识别图片对比度和亮度偏大识别准确率下降")
+            app.logger.info("背景和识别图片对比度和亮度偏大识别准确率下降")
+            blur_size = (21, 21)
+            blocksize = 16
+            self.bg = illum(self.bg)
+            self.target = illum(self.target)
+            self.bg = unevenLightCompensate(self.bg, blocksize)
+            self.target = unevenLightCompensate(self.target, blocksize)
         else:
             blur_size = (15, 15)
         bg = cv2.GaussianBlur(self.bg, blur_size, 0)
@@ -107,12 +122,12 @@ class ObjectRecognition:
         grayB = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
         score, diff = ssim(grayA, grayB, full=True)
         diff = (diff * 255).astype('uint8')
-        if self.is_wb:
-            print("背景是黑白图识别准确率会下降！")
-            app.logger.info("背景是黑白图识别准确率会下降！")
-            thresh = cv2.Canny(diff, 128, 256)
-        else:
-            thresh = cv2.threshold(diff, 100, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]  # ret, thresh = ...
+        # if self.is_wb:
+        #     print("背景是黑白图识别准确率会下降！")
+        #     app.logger.info("背景是黑白图识别准确率会下降！")
+        #     thresh = cv2.Canny(diff, 128, 256)
+        # else:
+        thresh = cv2.threshold(diff, 100, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]  # ret, thresh = ...
 
         cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
         return cnts
@@ -135,7 +150,6 @@ class ObjectRecognition:
         sumbg = np.sum(thresh_bg)
         sumtest = np.sum(thresh_target)
         diff_score = round(float(sumbg/sumtest), 3)
-        print("图片不同度:", diff_score)
         return diff_score
 
 
@@ -168,23 +182,45 @@ class ObjectRecognition:
                     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
                     cnt_dict = {"x_min": x, "x_max": x+w, "y_min": y, "y_max": y+h}
                     cnt_list.append(cnt_dict)
+            if cnt_list:
+                cnt_list_del = cnt_list
+                for cnt_dict in cnt_list:
+                    for cnt_dict_check in cnt_list_del:
+                        origin_target = cv2.cvtColor(self.origin_target, cv2.COLOR_BGR2GRAY)
+                        origin_bg = cv2.cvtColor(self.origin_bg, cv2.COLOR_BGR2GRAY)
+                        target = origin_target[cnt_dict["y_min"]:cnt_dict["y_max"], cnt_dict["x_min"]:cnt_dict["x_max"]]
+                        bg = origin_bg[cnt_dict_check["y_min"]:cnt_dict_check["y_max"],
+                             cnt_dict_check["x_min"]:cnt_dict_check["x_max"]]
+                        target_sum = np.sum(target)
+                        bg_sum = np.sum(bg)
+                        diff = abs(target_sum - bg_sum)
+                        result = diff / bg_sum
+                        if result < 0.1:
+                            if cnt_dict in cnt_list:
+                                cnt_list.remove(cnt_dict)
+            if cnt_list:
+                for cnt_dict in cnt_list:
+                    cv2.rectangle(img, (cnt_dict["x_min"], cnt_dict["y_min"]), (cnt_dict["x_max"], cnt_dict["y_max"]),
+                                  (0, 0, 255), 2)
+            else:
+                cnt_list = []
         return img, cnt_list
 
 
     def main(self):
         self.clip_area()
         self.is_light = self.check_light()
-        self.is_wb = self.check_bg()
+        # self.is_wb = self.check_bg()
         # 判断两个图片的相似度
         diff_score = self.different()
         # 找到多余物体的位置并画出来
-        if diff_score < 0.92 or diff_score > 1:
+        if diff_score < 0.95 or diff_score > 1:
             cnts = self.get_contours()
             draw_img, cnt_list = self.draw_min_rect_circle(self.origin_target, cnts)
             #  cv2.imshow("result", draw_img)
-            file_dir = os.path.join(os.path.abspath('.'), "results")
-            file_path = os.path.join(file_dir, self.target_name)
-            cv2.imwrite(file_path, draw_img)
+            #file_dir = os.path.join(os.path.abspath('.'), "results")
+            #file_path = os.path.join(file_dir, self.target_name)
+            #cv2.imwrite(file_path, draw_img)
             # cv2.waitKey(3000)
             if cnt_list:
                 return diff_score, cnt_list
@@ -197,14 +233,15 @@ class ObjectRecognition:
 
 @app.route("/check", methods=["POST"])
 def check_image():
+    tic = time.time()
     try:
         # 获得背景图片和识别图片
         bg_url = request.form.get("bg_url")
         print("背景图片：", bg_url)
         target_url = request.form.get("image_url")
-        target_name = target_url.split('/')[-1]
-        if not target_name.endswith('.jpg'):
-            target_name = target_name + '.jpg'
+        # target_name = target_url.split('/')[-1]
+        #if not target_name.endswith('.jpg'):
+         #   target_name = target_name + '.jpg'
         print("识别图片", target_url)
     except Exception as e:
         print(e)
@@ -241,13 +278,22 @@ def check_image():
         return jsonify({"error": "no image file"})
     try:
         # 识别图片获得相似度和多余物体的位置
-        obj_reco = ObjectRecognition(bg, target, target_name, area)
+        obj_reco = ObjectRecognition(bg, target, area)
         diff_score, coordinate_list = obj_reco.main()
+        print("相似度:",diff_score)
         if coordinate_list:
             diff_dict = OrderedDict([("diff_score", diff_score), ("count", len(coordinate_list)), ("data", coordinate_list)])
+            print("坐标：", coordinate_list)
+            
+            toc = time.time()
+            print('spnet {:.2f}'.format(toc-tic))
             return jsonify(diff_dict)
         if diff_score == 0.0:
             diff_dict = OrderedDict([("diff_score", diff_score), ("count", 0), ("data", None)])
+            print("坐标：None")
+            
+            toc = time.time()
+            print('spnet {:.2f}'.format(toc-tic))
             return jsonify(diff_dict)
     except Exception as e:
         print(e)
@@ -256,4 +302,4 @@ def check_image():
 
 if __name__ == '__main__':
 
-    app.run(debug=False, host="0.0.0.0", port=5001)
+    app.run(debug=False, host="0.0.0.0", port=5011)
