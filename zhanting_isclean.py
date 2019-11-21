@@ -185,5 +185,6 @@ if __name__ == '__main__':
             end_time = time.time()
             print("总耗时：{:.2f}".format(end_time - test_time))
         i += 1
+    cap.release()
     cur.close()
     conn.close()
