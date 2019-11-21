@@ -196,7 +196,7 @@ class ObjectRecognition:
                         bg_sum = cupy.sum(bg)
                         diff = abs(target_sum - bg_sum)
                         result = diff / bg_sum
-                        if result < 0.1:
+                        if result < 0.08:
                             if cnt_dict in cnt_list:
                                 cnt_list.remove(cnt_dict)
             if cnt_list:
