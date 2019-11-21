@@ -4,8 +4,9 @@ from skimage.measure import compare_ssim as ssim
 import time
 import os
 from pymysql import *
+from sys
 
-base_path = os.path.abspath(".")
+base_path = os.path.dirname(sys.argv[0])
 save_path = os.path.join(base_path, "result_image")
 filename = os.path.join(save_path, "result_image.jpg")
 
